@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Base Scene Template</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #0a0f1d;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #f8fafc;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+  <div id="stage">
+    <!-- Scene Content Injected Here -->
+  </div>
+
+  <script>
+    // Master timeline, paused for deterministic frame-by-frame stepping
+    const tl = gsap.timeline({ paused: true });
+
+    // Global hook for Playwright rendering
+    window.seekTimeline = function(seconds) {
+      tl.seek(seconds);
+    };
+
+    window.getTimelineDuration = function() {
+      return tl.duration();
+    };
+  </script>
+</body>
+</html>

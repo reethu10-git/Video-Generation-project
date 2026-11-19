@@ -1,0 +1,69 @@
+{
+  "title": "How Transformers Work in Artificial Intelligence",
+  "targetDuration": 90,
+  "scenes": [
+    {
+      "id": "scene1",
+      "sceneNumber": 1,
+      "title": "Introduction: The Transformer Revolution",
+      "visualDescription": "A stream of text enters an animated AI system. Sequential arrows transform into a bright network of parallel connections spanning the entire sentence.",
+      "narration": "Transformers changed AI by replacing slow step-by-step processing with parallel attention, allowing models to connect ideas across entire sequences at once."
+    },
+    {
+      "id": "scene2",
+      "sceneNumber": 2,
+      "title": "The Problem with Traditional Sequential Models",
+      "visualDescription": "An RNN and LSTM process words one at a time along a timeline. Signals weaken as they travel toward distant words, while a clock emphasizes slow processing.",
+      "narration": "RNNs and LSTMs processed tokens sequentially, making training slow and causing early information to fade before distant words could connect reliably."
+    },
+    {
+      "id": "scene3",
+      "sceneNumber": 3,
+      "title": "What Are Tokens?",
+      "visualDescription": "A sentence breaks apart into colorful blocks labeled with words, subwords, and punctuation. Each block receives a numerical identifier and enters a computational pipeline.",
+      "narration": "Before language can be processed, text becomes tokens: whole words, subwords, or punctuation, each assigned an identifier the model can compute with."
+    },
+    {
+      "id": "scene4",
+      "sceneNumber": 4,
+      "title": "Token Embeddings and Positional Encoding",
+      "visualDescription": "Token IDs expand into multidimensional vector points. Colorful sinusoidal waves wrap around the vectors, visibly marking each token's position in the sentence.",
+      "narration": "Each token becomes a rich continuous embedding, then sinusoidal positional encoding adds mathematical information about its location, so order survives parallel computation."
+    },
+    {
+      "id": "scene5",
+      "sceneNumber": 5,
+      "title": "Self-Attention",
+      "visualDescription": "Every word in a sentence emits glowing lines toward every other word. Stronger connections illuminate relationships such as subject, action, and object.",
+      "narration": "Self-attention lets every token compare with every other token simultaneously, discovering which words clarify, modify, or depend on one another across the sentence."
+    },
+    {
+      "id": "scene6",
+      "sceneNumber": 6,
+      "title": "Query, Key, and Value",
+      "visualDescription": "A database-style interface shows a Query searching through labeled Keys. Relevance scores adjust flowing Value cards, which merge into a contextual result.",
+      "narration": "Think of a database: a Query asks what matters, matching Keys measure relevance, and weighted Values deliver the information needed for understanding."
+    },
+    {
+      "id": "scene7",
+      "sceneNumber": 7,
+      "title": "Multi-Head Attention",
+      "visualDescription": "Several parallel attention pathways analyze the same sentence. One highlights grammatical structure, another meaning, and a third links pronouns to earlier nouns.",
+      "narration": "Multiple attention heads work in parallel, each learning a different perspective—syntax, semantics, or coreference—then their outputs combine into a richer representation."
+    },
+    {
+      "id": "scene8",
+      "sceneNumber": 8,
+      "title": "Feed-Forward Networks and Transformer Layers",
+      "visualDescription": "Attention outputs pass through stacked transformer blocks. Circular residual arrows preserve information, LayerNorm balances signals, and feed-forward networks reshape representations.",
+      "narration": "After attention, residual connections preserve useful original information, LayerNorm stabilizes signals, and feed-forward networks transform each position, repeatedly refining representations through stacked transformer layers."
+    },
+    {
+      "id": "scene9",
+      "sceneNumber": 9,
+      "title": "Conclusion: Powering Modern AI",
+      "visualDescription": "The completed transformer expands into applications including a chatbot, translation tool, image system, coding assistant, and scientific research interface.",
+      "narration": "Together, these scalable layers turn context into predictions, powering foundation models and large language models that generate, translate, reason, and drive modern AI."
+    }
+  ]
+}

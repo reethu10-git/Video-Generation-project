@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 1: Introduction</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #111a36 0%, #060913 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .title {
+      font-size: 80px;
+      font-weight: 800;
+      line-height: 1.1;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff 20%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      transform: scale(0.9);
+      max-width: 1300px;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 32px;
+      font-weight: 400;
+      color: #94a3b8;
+      margin-top: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      text-align: center;
+      max-width: 1000px;
+    }
+    .grid-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+      opacity: 0.6;
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .glow-orb {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
+      filter: blur(40px);
+      z-index: 0;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+  <script>
+    if (typeof gsap === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <div class="grid-bg"></div>
+    <div class="glow-orb" id="glow"></div>
+    <div class="content">
+      <div class="badge" id="badge">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        Deep Learning Fundamentals
+      </div>
+      <h1 class="title" id="title">How <span class="highlight">Neural Networks</span> Work</h1>
+      <p class="subtitle" id="subtitle">The computational engine powering modern artificial intelligence</p>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#glow", { opacity: 1, scale: 1.1, duration: 2.0, ease: "power2.out" }, 0.2)
+      .to("#badge", { opacity: 1, y: 0, duration: 1.0, ease: "back.out(1.5)" }, 0.4)
+      .to("#title", { opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" }, 0.8)
+      .to("#subtitle", { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" }, 1.4)
+      .to("#title", { y: -10, duration: 2.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.0)
+      .to(".content", { opacity: 0, scale: 0.95, duration: 0.8, ease: "power2.in" }, 4.2);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 5.0; };
+  </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 2: The Artificial Neuron</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #080d1a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      padding: 60px 100px;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .tag {
+      font-size: 18px;
+      color: #38bdf8;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .scene-title {
+      font-size: 52px;
+      font-weight: 800;
+    }
+    .canvas-area {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    svg.neuron-diagram {
+      width: 1400px;
+      height: 600px;
+    }
+    .input-node {
+      fill: #1e293b;
+      stroke: #38bdf8;
+      stroke-width: 4px;
+    }
+    .input-text {
+      fill: #38bdf8;
+      font-size: 26px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .center-node {
+      fill: #0f172a;
+      stroke: #818cf8;
+      stroke-width: 6px;
+      filter: drop-shadow(0 0 25px rgba(129, 140, 248, 0.4));
+    }
+    .center-text {
+      fill: #ffffff;
+      font-size: 40px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .activation-node {
+      fill: #1e293b;
+      stroke: #34d399;
+      stroke-width: 4px;
+      filter: drop-shadow(0 0 20px rgba(52, 211, 153, 0.3));
+    }
+    .output-node {
+      fill: #1e293b;
+      stroke: #f43f5e;
+      stroke-width: 4px;
+    }
+    .wire {
+      stroke: #334155;
+      stroke-width: 4px;
+      fill: none;
+    }
+    .active-wire {
+      stroke: #38bdf8;
+      stroke-dasharray: 8 6;
+      stroke-width: 4px;
+    }
+    .label {
+      fill: #94a3b8;
+      font-size: 20px;
+      font-weight: 600;
+      text-anchor: middle;
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+  <script>
+    if (typeof gsap === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <div class="header" id="header">
+      <div class="tag">Building Block</div>
+      <h2 class="scene-title">The Artificial Neuron (Perceptron)</h2>
+    </div>
+
+    <div class="canvas-area">
+      <svg class="neuron-diagram" viewBox="0 0 1400 600">
+        <!-- Connecting wires -->
+        <path id="w1" class="wire" d="M 220 150 L 600 300" />
+        <path id="w2" class="wire" d="M 220 300 L 600 300" />
+        <path id="w3" class="wire" d="M 220 450 L 600 300" />
+        
+        <path id="w-act" class="wire" d="M 720 300 L 920 300" />
+        <path id="w-out" class="wire" d="M 1040 300 L 1220 300" />
+
+        <!-- Input Nodes -->
+        <g id="in-group">
+          <circle cx="200" cy="150" r="45" class="input-node" />
+          <text x="200" y="150" class="input-text">X₁</text>
+          <text x="110" y="150" class="label">Input 1</text>
+
+          <circle cx="200" cy="300" r="45" class="input-node" />
+          <text x="200" y="300" class="input-text">X₂</text>
+          <text x="110" y="300" class="label">Input 2</text>
+
+          <circle cx="200" cy="450" r="45" class="input-node" />
+          <text x="200" y="450" class="input-text">X₃</text>
+          <text x="110" y="450" class="label">Input 3</text>
+        </g>
+
+        <!-- Summation Node -->
+        <g id="sum-group">
+          <circle cx="660" cy="300" r="65" class="center-node" />
+          <text x="660" y="300" class="center-text">∑</text>
+          <text x="660" y="390" class="label">Summation</text>
+        </g>
+
+        <!-- Activation Function Node -->
+        <g id="act-group">
+          <circle cx="980" cy="300" r="55" class="activation-node" />
+          <text x="980" y="300" class="input-text" style="fill:#34d399">f(x)</text>
+          <text x="980" y="380" class="label">Activation</text>
+        </g>
+
+        <!-- Output Node -->
+        <g id="out-group">
+          <circle cx="1250" cy="300" r="45" class="output-node" />
+          <text x="1250" y="300" class="input-text" style="fill:#f43f5e">Y</text>
+          <text x="1250" y="370" class="label">Output</text>
+        </g>
+
+        <!-- Animated Signal Pulse -->
+        <circle id="pulse1" cx="200" cy="150" r="10" fill="#38bdf8" opacity="0" />
+        <circle id="pulse2" cx="200" cy="300" r="10" fill="#38bdf8" opacity="0" />
+        <circle id="pulse3" cx="200" cy="450" r="10" fill="#38bdf8" opacity="0" />
+        <circle id="pulse4" cx="660" cy="300" r="12" fill="#818cf8" opacity="0" />
+        <circle id="pulse5" cx="980" cy="300" r="12" fill="#34d399" opacity="0" />
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#header", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2)
+      .from("#in-group", { opacity: 0, scale: 0.8, duration: 0.8, ease: "back.out(1.5)" }, 0.6)
+      .from(".wire", { strokeDashoffset: 400, opacity: 0, duration: 0.8, stagger: 0.1 }, 1.0)
+      .from("#sum-group", { opacity: 0, scale: 0.6, duration: 0.8, ease: "back.out(1.8)" }, 1.4)
+      .from("#act-group", { opacity: 0, scale: 0.6, duration: 0.8, ease: "back.out(1.8)" }, 1.8)
+      .from("#out-group", { opacity: 0, scale: 0.6, duration: 0.8, ease: "back.out(1.8)" }, 2.2)
+      // Pulse animations
+      .to(["#pulse1", "#pulse2", "#pulse3"], { opacity: 1, duration: 0.1 }, 2.6)
+      .to("#pulse1", { cx: 660, cy: 300, duration: 0.7, ease: "power1.inOut" }, 2.6)
+      .to("#pulse2", { cx: 660, cy: 300, duration: 0.7, ease: "power1.inOut" }, 2.6)
+      .to("#pulse3", { cx: 660, cy: 300, duration: 0.7, ease: "power1.inOut" }, 2.6)
+      .to(["#pulse1", "#pulse2", "#pulse3"], { opacity: 0, duration: 0.1 }, 3.3)
+      .to("#pulse4", { opacity: 1, duration: 0.1 }, 3.3)
+      .to("#pulse4", { cx: 980, duration: 0.6, ease: "power1.inOut" }, 3.3)
+      .to("#pulse4", { opacity: 0, duration: 0.1 }, 3.9)
+      .to("#pulse5", { opacity: 1, duration: 0.1 }, 3.9)
+      .to("#pulse5", { cx: 1250, duration: 0.5, ease: "power1.inOut" }, 3.9)
+      .to("#stage", { opacity: 0, duration: 0.5, ease: "power2.in" }, 4.5);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 5.0; };
+  </script>
+</body>
+</html>

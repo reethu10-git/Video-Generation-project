@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 5: Deep Neural Network Architecture</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0d1527 0%, #050811 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .header {
+      position: absolute;
+      top: 50px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .tag {
+      font-size: 18px;
+      color: #a855f7;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .scene-title {
+      font-size: 46px;
+      font-weight: 800;
+    }
+    svg.network-svg {
+      width: 1600px;
+      height: 700px;
+      margin-top: 50px;
+    }
+    .edge {
+      stroke: rgba(148, 163, 184, 0.15);
+      stroke-width: 1.5;
+    }
+    .active-edge {
+      stroke: #38bdf8;
+      stroke-width: 2.5;
+      stroke-opacity: 0.8;
+    }
+    .node-circle {
+      fill: #0f172a;
+      stroke-width: 3px;
+      transition: all 0.3s;
+    }
+    .n-in { stroke: #38bdf8; fill: #082f49; }
+    .n-h1 { stroke: #818cf8; fill: #1e1b4b; }
+    .n-h2 { stroke: #c084fc; fill: #3b0764; }
+    .n-out { stroke: #34d399; fill: #064e3b; }
+    .packet {
+      fill: #38bdf8;
+      filter: drop-shadow(0 0 8px #38bdf8);
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+  <script>
+    if (typeof gsap === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <div class="header" id="header">
+      <div class="tag">Deep Learning</div>
+      <h2 class="scene-title">Interconnected Deep Neural Architecture</h2>
+    </div>
+
+    <svg class="network-svg" id="net-svg" viewBox="0 0 1600 700">
+      <g id="edges-group"></g>
+      <g id="nodes-group"></g>
+      <g id="pulses-group"></g>
+    </svg>
+  </div>
+
+  <script>
+    // Construct layers
+    const layerDefs = [
+      { count: 4, x: 200, cls: 'n-in', label: 'Inputs' },
+      { count: 6, x: 550, cls: 'n-h1', label: 'Hidden 1' },
+      { count: 6, x: 950, cls: 'n-h2', label: 'Hidden 2' },
+      { count: 3, x: 1350, cls: 'n-out', label: 'Outputs' }
+    ];
+
+    const nodes = [];
+    const svgEdges = document.getElementById('edges-group');
+    const svgNodes = document.getElementById('nodes-group');
+
+    layerDefs.forEach((l, lIdx) => {
+      const step = 600 / (l.count + 1);
+      const layerNodes = [];
+      for (let i = 0; i < l.count; i++) {
+        const y = 50 + step * (i + 1);
+        layerNodes.push({ x: l.x, y, cls: l.cls, id: `n_${lIdx}_${i}` });
+      }
+      nodes.push(layerNodes);
+    });
+
+    // Generate edges between consecutive layers
+    const edges = [];
+    for (let l = 0; l < nodes.length - 1; l++) {
+      const curr = nodes[l];
+      const next = nodes[l + 1];
+      curr.forEach(n1 => {
+        next.forEach(n2 => {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', n1.x);
+          line.setAttribute('y1', n1.y);
+          line.setAttribute('x2', n2.x);
+          line.setAttribute('y2', n2.y);
+          line.setAttribute('class', 'edge');
+          svgEdges.appendChild(line);
+          edges.push({ line, n1, n2 });
+        });
+      });
+    }
+
+    // Render nodes
+    nodes.forEach(layer => {
+      layer.forEach(n => {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', n.x);
+        circle.setAttribute('cy', n.y);
+        circle.setAttribute('r', '22');
+        circle.setAttribute('class', `node-circle ${n.cls}`);
+        circle.setAttribute('id', n.id);
+        svgNodes.appendChild(circle);
+      });
+    });
+
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#header", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2)
+      .from(".edge", { opacity: 0, duration: 1.0, stagger: 0.005 }, 0.4)
+      .from(".node-circle", { scale: 0, transformOrigin: "center center", duration: 0.8, stagger: 0.04, ease: "back.out(2)" }, 0.8);
+
+    // Dynamic wave pulses across layers
+    for (let i = 0; i < 4; i++) {
+      tl.to(`.n-in`, { scale: 1.3, duration: 0.3, yoyo: true, repeat: 1 }, 1.8 + i * 0.6)
+        .to(`.n-h1`, { scale: 1.25, duration: 0.3, yoyo: true, repeat: 1 }, 2.0 + i * 0.6)
+        .to(`.n-h2`, { scale: 1.25, duration: 0.3, yoyo: true, repeat: 1 }, 2.2 + i * 0.6)
+        .to(`.n-out`, { scale: 1.35, duration: 0.3, yoyo: true, repeat: 1 }, 2.4 + i * 0.6);
+    }
+
+    tl.to("#stage", { opacity: 0, duration: 0.5, ease: "power2.in" }, 4.5);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 5.0; };
+  </script>
+</body>
+</html>

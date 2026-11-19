@@ -1,0 +1,33 @@
+{
+  "name": "html-gsap-video-generator",
+  "version": "1.0.0",
+  "description": "Reusable video-generation skill and pipeline using HTML, CSS, JavaScript, GSAP, Playwright, and FFmpeg",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test:nexus": "node scripts/test-nexus.js",
+    "test:voice": "node scripts/test-nexus.js",
+    "generate": "node scripts/generate-video.js",
+    "pi": "pi",
+    "pipeline": "node src/index.js",
+    "render": "node src/renderer.js",
+    "assemble": "node src/assembler.js"
+  },
+  "keywords": [
+    "gsap",
+    "playwright",
+    "ffmpeg",
+    "video-generator",
+    "nexus",
+    "polly"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "gsap": "^3.12.7",
+    "lucide": "^0.475.0",
+    "lucide-react": "^0.475.0",
+    "playwright": "^1.50.1"
+  }
+}

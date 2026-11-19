@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0">
+  <title>A Network of Neurons</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #070b14;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #f8fafc;
+    }
+
+    #scene-container {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      background: radial-gradient(circle at 50% 20%, #151e36 0%, #070b14 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 70px 100px 60px 100px;
+      overflow: hidden;
+    }
+
+    /* Ambient background grid */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Header Section */
+    .header-zone {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      color: #94a3b8;
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Main Visual Stage */
+    .stage-zone {
+      position: relative;
+      z-index: 5;
+      flex: 1;
+      width: 100%;
+      max-width: 1600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    /* Cards Layout */
+    .cards-wrapper {
+      display: flex;
+      gap: 36px;
+      width: 100%;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .info-card {
+      flex: 1;
+      max-width: 440px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 20px;
+      padding: 36px 32px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .card-desc {
+      font-size: 17px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .card-tag {
+      margin-top: auto;
+      font-size: 13px;
+      font-weight: 600;
+      color: #38bdf8;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Flow Layout */
+    .flow-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1400px;
+      gap: 20px;
+    }
+
+    .flow-node {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .flow-arrow {
+      font-size: 32px;
+      color: #38bdf8;
+      opacity: 0.8;
+    }
+
+    /* Diagram Layout */
+    .diagram-wrapper {
+      display: flex;
+      gap: 50px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .diagram-panel {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      padding: 36px;
+    }
+
+    /* Subtitle Banner at bottom */
+    .narration-bar {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1300px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .narration-bullet {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 12px #38bdf8;
+      flex-shrink: 0;
+    }
+
+    .narration-text {
+      font-size: 19px;
+      font-weight: 500;
+      color: #e2e8f0;
+      line-height: 1.4;
+      flex: 1;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <div id="scene-container">
+    <div class="bg-grid"></div>
+
+    <!-- Header -->
+    <div class="header-zone">
+      <div class="badge" id="badge-pill">AI Explainer</div>
+      <h1 class="title" id="main-title">A Network of Neurons</h1>
+      <p class="subtitle" id="main-subtitle">Connected layers process information</p>
+    </div>
+
+    <!-- Visual Center Stage -->
+    <div class="stage-zone">
+      
+    <div class="cards-wrapper">
+      
+        <div class="info-card anim-item ">
+          <div class="card-icon">🧠</div>
+          <h2 class="card-title">Neural Network</h2>
+          <p class="card-desc">Connected processing units inspired by the brain</p>
+          <div class="card-tag">Core</div>
+        </div>
+      
+    </div>
+  
+    </div>
+
+    <!-- Narration Subtitle Bar -->
+    <div class="narration-bar" id="narration-container">
+      <div class="narration-bullet"></div>
+      <div class="narration-text">A neural network is a system of connected artificial neurons that transforms information to discover useful patterns.</div>
+    </div>
+  </div>
+
+  <script>
+    // Master Deterministic Timeline
+    const tl = gsap.timeline({ paused: true });
+    const SCENE_DURATION = 7.50;
+
+    // Visual choreography
+    tl.fromTo('#badge-pill', 
+      { opacity: 0, y: -20 }, 
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.1
+    );
+
+    tl.fromTo('#main-title',
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.3
+    );
+
+    
+    tl.fromTo('#main-subtitle',
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.5
+    );
+
+    tl.fromTo('.anim-item',
+      { opacity: 0, y: 35, scale: 0.95 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.2, ease: 'back.out(1.4)' }, 0.7
+    );
+
+    tl.fromTo('#narration-container',
+      { opacity: 0, y: 25 },
+      { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.9
+    );
+
+    // Subtle breathing highlight during narration
+    tl.to('.highlight-glow', {
+      boxShadow: '0 0 30px rgba(56, 189, 248, 0.35)',
+      duration: 1.5,
+      yoyo: true,
+      repeat: -1,
+      ease: 'sine.inOut'
+    }, 1.5);
+
+    // Deterministic Frame Hook for Playwright
+    window.seekTimeline = function(timeInSeconds) {
+      tl.seek(timeInSeconds, false);
+    };
+
+    // Auto-advance indicator for debugging
+    window.__SCENE_DURATION__ = SCENE_DURATION;
+  </script>
+</body>
+</html>

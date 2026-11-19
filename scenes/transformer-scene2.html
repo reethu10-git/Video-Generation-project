@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 2: The Sequential Bottleneck</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #160c1d 0%, #08050e 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      padding: 60px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #f43f5e;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 56px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 30%, #fda4af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 24px;
+      color: #94a3b8;
+    }
+    .canvas-area {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .rnn-timeline {
+      width: 1500px;
+      height: 340px;
+    }
+    .problem-cards {
+      display: flex;
+      gap: 40px;
+    }
+    .pill {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 16px 32px;
+      font-size: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div id="stage">
+    <div class="header" id="header">
+      <div class="badge">The Bottleneck • RNNs & LSTMs</div>
+      <h1 class="title">The Problem with Sequential Processing</h1>
+      <p class="subtitle">Linear step-by-step processing creates severe memory and scaling bottlenecks</p>
+    </div>
+
+    <div class="canvas-area">
+      <!-- Unrolled RNN Vector Graphic -->
+      <svg class="rnn-timeline" viewBox="0 0 1500 340">
+        <!-- Connecting hidden state arrows -->
+        <path id="arr1" d="M 270 140 L 370 140" stroke="#10b981" stroke-width="4" marker-end="url(#arrowhead)"/>
+        <path id="arr2" d="M 530 140 L 630 140" stroke="#f59e0b" stroke-width="4"/>
+        <path id="arr3" d="M 790 140 L 890 140" stroke="#f97316" stroke-width="3"/>
+        <path id="arr4" d="M 1050 140 L 1150 140" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 6"/>
+
+        <!-- RNN Cell 1 -->
+        <g id="cell1" transform="translate(150, 80)">
+          <rect width="120" height="120" rx="16" fill="#064e3b" stroke="#10b981" stroke-width="3"/>
+          <text x="60" y="55" fill="#10b981" font-size="20" font-weight="bold" text-anchor="middle">h₀</text>
+          <text x="60" y="85" fill="#fff" font-size="16" text-anchor="middle">"The"</text>
+          <!-- Signal energy indicator -->
+          <circle cx="60" cy="145" r="8" fill="#10b981"/>
+          <text x="60" y="180" fill="#10b981" font-size="14" text-anchor="middle">100% Signal</text>
+        </g>
+
+        <!-- RNN Cell 2 -->
+        <g id="cell2" transform="translate(410, 80)">
+          <rect width="120" height="120" rx="16" fill="#1e293b" stroke="#f59e0b" stroke-width="3"/>
+          <text x="60" y="55" fill="#f59e0b" font-size="20" font-weight="bold" text-anchor="middle">h₁</text>
+          <text x="60" y="85" fill="#fff" font-size="16" text-anchor="middle">"bank"</text>
+          <circle cx="60" cy="145" r="7" fill="#f59e0b"/>
+          <text x="60" y="180" fill="#f59e0b" font-size="14" text-anchor="middle">70% Signal</text>
+        </g>
+
+        <!-- RNN Cell 3 -->
+        <g id="cell3" transform="translate(670, 80)">
+          <rect width="120" height="120" rx="16" fill="#1e293b" stroke="#f97316" stroke-width="3"/>
+          <text x="60" y="55" fill="#f97316" font-size="20" font-weight="bold" text-anchor="middle">h₂</text>
+          <text x="60" y="85" fill="#fff" font-size="16" text-anchor="middle">"of the"</text>
+          <circle cx="60" cy="145" r="5" fill="#f97316"/>
+          <text x="60" y="180" fill="#f97316" font-size="14" text-anchor="middle">40% Signal</text>
+        </g>
+
+        <!-- RNN Cell 4 -->
+        <g id="cell4" transform="translate(930, 80)">
+          <rect width="120" height="120" rx="16" fill="#1e293b" stroke="#ef4444" stroke-width="2"/>
+          <text x="60" y="55" fill="#ef4444" font-size="20" font-weight="bold" text-anchor="middle">h₃</text>
+          <text x="60" y="85" fill="#fff" font-size="16" text-anchor="middle">"river..."</text>
+          <circle cx="60" cy="145" r="3" fill="#ef4444"/>
+          <text x="60" y="180" fill="#ef4444" font-size="14" text-anchor="middle">15% Faded</text>
+        </g>
+
+        <!-- Distant Cell -->
+        <g id="cell5" transform="translate(1190, 80)">
+          <rect width="120" height="120" rx="16" fill="#0f172a" stroke="#475569" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="60" y="55" fill="#64748b" font-size="20" font-weight="bold" text-anchor="middle">hₙ</text>
+          <text x="60" y="85" fill="#64748b" font-size="16" text-anchor="middle">Lost Context</text>
+          <text x="60" y="180" fill="#64748b" font-size="14" text-anchor="middle">Signal Vanished</text>
+        </g>
+      </svg>
+
+      <div class="problem-cards">
+        <div class="pill" id="p1" style="border-color: rgba(244, 63, 94, 0.4); color: #fda4af;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          No Parallelization (Cannot utilize GPUs)
+        </div>
+        <div class="pill" id="p2" style="border-color: rgba(249, 115, 22, 0.4); color: #fdba74;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          </svg>
+          Vanishing Gradient & Information Loss
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#header", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2)
+      .from("#cell1", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(1.5)" }, 0.8)
+      .from("#arr1", { opacity: 0, strokeDashoffset: 50, duration: 0.4 }, 1.5)
+      .from("#cell2", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(1.5)" }, 1.9)
+      .from("#arr2", { opacity: 0, strokeDashoffset: 50, duration: 0.4 }, 2.6)
+      .from("#cell3", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(1.5)" }, 3.0)
+      .from("#arr3", { opacity: 0, strokeDashoffset: 50, duration: 0.4 }, 3.7)
+      .from("#cell4", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(1.5)" }, 4.1)
+      .from("#arr4", { opacity: 0, strokeDashoffset: 50, duration: 0.4 }, 4.8)
+      .from("#cell5", { opacity: 0, scale: 0.7, duration: 0.6, ease: "back.out(1.5)" }, 5.2)
+      .to(["#p1", "#p2"], { opacity: 1, y: 0, stagger: 0.3, duration: 0.8, ease: "power2.out" }, 6.2)
+      .to("#stage", { opacity: 0, duration: 0.6, ease: "power2.in" }, 9.2);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 9.9; };
+  </script>
+</body>
+</html>

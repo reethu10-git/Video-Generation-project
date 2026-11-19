@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 9: Powering Modern AI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0d1a38 0%, #050813 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      padding: 60px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .title {
+      font-size: 64px;
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff 30%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    .subtitle {
+      font-size: 26px;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 1100px;
+      line-height: 1.5;
+      margin-bottom: 50px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      width: 1400px;
+    }
+    .app-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .app-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .app-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .app-desc {
+      font-size: 16px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+    .summary-strip {
+      display: flex;
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .strip-pill {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 12px 30px;
+      border-radius: 9999px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e2e8f0;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div id="stage">
+    <div class="badge" id="badge">The Foundation of Modern Intelligence</div>
+    <h1 class="title" id="title">Transforming Modern Artificial Intelligence</h1>
+    <p class="subtitle" id="subtitle">From language generation and code synthesis to vision and reasoning, Transformers underpin today's frontier foundation models.</p>
+
+    <div class="apps-grid">
+      <!-- App 1: LLMs -->
+      <div class="app-card" id="a1" style="border-color: rgba(56, 189, 248, 0.3);">
+        <div class="app-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </div>
+        <div class="app-title" style="color: #38bdf8;">Large Language Models</div>
+        <div class="app-desc">Powering natural dialogue, contextual comprehension, and generative text.</div>
+      </div>
+
+      <!-- App 2: Code -->
+      <div class="app-card" id="a2" style="border-color: rgba(129, 140, 248, 0.3);">
+        <div class="app-icon" style="background: rgba(129, 140, 248, 0.15); color: #818cf8;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <div class="app-title" style="color: #818cf8;">Code & Reasoning</div>
+        <div class="app-desc">Automated software engineering, logic verification, and complex math.</div>
+      </div>
+
+      <!-- App 3: Vision -->
+      <div class="app-card" id="a3" style="border-color: rgba(168, 85, 247, 0.3);">
+        <div class="app-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </div>
+        <div class="app-title" style="color: #a855f7;">Vision Transformers (ViT)</div>
+        <div class="app-desc">Processing image patches as tokens for high-resolution visual perception.</div>
+      </div>
+
+      <!-- App 4: Multimodal -->
+      <div class="app-card" id="a4" style="border-color: rgba(52, 211, 153, 0.3);">
+        <div class="app-icon" style="background: rgba(52, 211, 153, 0.15); color: #34d399;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+        <div class="app-title" style="color: #34d399;">Multimodal Intelligence</div>
+        <div class="app-desc">Unifying speech, image, video, and action into a shared attention space.</div>
+      </div>
+    </div>
+
+    <div class="summary-strip">
+      <div class="strip-pill" id="sp1">✓ Massively Parallel Architecture</div>
+      <div class="strip-pill" id="sp2">✓ Unlimited Contextual Attention</div>
+      <div class="strip-pill" id="sp3">✓ Scalable Foundation Models</div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#badge", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.5)" }, 0.2)
+      .to("#title", { opacity: 1, scale: 1, duration: 1.0, ease: "power3.out" }, 0.6)
+      .to("#subtitle", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 1.2)
+      .to(["#a1", "#a2", "#a3", "#a4"], { opacity: 1, y: 0, stagger: 0.2, duration: 0.8, ease: "back.out(1.5)" }, 2.0)
+      .to([".app-card"], { y: -8, stagger: 0.1, duration: 1.2, yoyo: true, repeat: 1 }, 4.5)
+      .to(["#sp1", "#sp2", "#sp3"], { opacity: 1, y: 0, stagger: 0.2, duration: 0.6, ease: "back.out(1.5)" }, 7.0)
+      .to("#stage", { opacity: 0, duration: 0.8, ease: "power2.in" }, 10.6);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 11.6; };
+  </script>
+</body>
+</html>

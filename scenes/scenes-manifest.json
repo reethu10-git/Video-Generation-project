@@ -1,0 +1,42 @@
+{
+  "title": "How Transformers Understand Language",
+  "totalDuration": 27,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "scenes": [
+    {
+      "id": "scene1",
+      "sceneNumber": 1,
+      "title": "Tokens: Breaking Text Apart",
+      "duration": 8.4,
+      "audioDuration": 7.872,
+      "audioFile": "assets/audio/how_transformers_understand_language_scene_1.mp3",
+      "file": "scenes/how_transformers_understand_language_scene_1.html",
+      "narration": "Transformers first split text into tokens—small pieces like words or word parts—so the model can process language as numbers.",
+      "hash": "e04f4f4fdd50ebe1f21756727aff70e6eaef9f5f2c12d61cf824fca0d2402d56"
+    },
+    {
+      "id": "scene2",
+      "sceneNumber": 2,
+      "title": "Self-Attention: Finding Connections",
+      "duration": 8.9,
+      "audioDuration": 8.448,
+      "audioFile": "assets/audio/how_transformers_understand_language_scene_2.mp3",
+      "file": "scenes/how_transformers_understand_language_scene_2.html",
+      "narration": "Self-attention lets each token compare with every other token, deciding which relationships matter most for understanding meaning and context in a sentence.",
+      "hash": "485d131b420ddb13415caadc45a08b60ae517c7ee3bc7d47c03632dcb77caf6b"
+    },
+    {
+      "id": "scene3",
+      "sceneNumber": 3,
+      "title": "Layers: Producing Predictions",
+      "duration": 9.5,
+      "audioDuration": 9.048,
+      "audioFile": "assets/audio/how_transformers_understand_language_scene_3.mp3",
+      "file": "scenes/how_transformers_understand_language_scene_3.html",
+      "narration": "Stacked transformer layers repeatedly refine these representations, then predict useful outputs, such as the next token, a translation, or an answer.",
+      "hash": "139bdd376af2b401ef680bed9a16e08ba25865b14c4740560df6f1ffe5e2fd76"
+    }
+  ]
+}

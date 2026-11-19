@@ -1,0 +1,9 @@
+{
+  "skills": [
+    ".pi/skills/video-generation",
+    "skill"
+  ],
+  "prompts": [
+    ".pi/prompts"
+  ]
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 3: What Are Tokens?</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0c182c 0%, #050a14 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      padding: 60px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .header {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      color: #0ea5e9;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 24px;
+      color: #94a3b8;
+    }
+    .content-area {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+    }
+    .raw-sentence {
+      background: #0f172a;
+      border: 2px solid #334155;
+      padding: 24px 60px;
+      border-radius: 20px;
+      font-size: 38px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #f8fafc;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    .split-arrow {
+      opacity: 0;
+      color: #38bdf8;
+    }
+    .tokens-container {
+      display: flex;
+      gap: 20px;
+    }
+    .token-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .token-box {
+      padding: 16px 28px;
+      border-radius: 14px;
+      font-size: 26px;
+      font-weight: 700;
+      background: #1e293b;
+      border: 2px solid #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+    .token-box.subword {
+      border-color: #a855f7;
+      color: #d8b4fe;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+    }
+    .token-box.punct {
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .token-id {
+      font-family: 'Fira Code', monospace;
+      font-size: 18px;
+      color: #64748b;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: #090e17;
+      border: 1px solid #1e293b;
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div id="stage">
+    <div class="header" id="header">
+      <div class="badge">Input Processing • Tokenization</div>
+      <h1 class="title">What Are Tokens?</h1>
+      <p class="subtitle">Converting continuous human language into discrete computational tokens</p>
+    </div>
+
+    <div class="content-area">
+      <div class="raw-sentence" id="sentence">
+        "Transformers are transforming modern AI!"
+      </div>
+
+      <div class="split-arrow" id="split-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="7 13 12 18 17 13"></polyline>
+          <polyline points="7 6 12 11 17 6"></polyline>
+        </svg>
+      </div>
+
+      <div class="tokens-container">
+        <div class="token-card" id="t1">
+          <div class="token-box">Transform</div>
+          <div class="token-id">ID: 4821</div>
+        </div>
+
+        <div class="token-card" id="t2">
+          <div class="token-box subword">##ers</div>
+          <div class="token-id">ID: 1042</div>
+        </div>
+
+        <div class="token-card" id="t3">
+          <div class="token-box">are</div>
+          <div class="token-id">ID: 527</div>
+        </div>
+
+        <div class="token-card" id="t4">
+          <div class="token-box">transform</div>
+          <div class="token-id">ID: 3914</div>
+        </div>
+
+        <div class="token-card" id="t5">
+          <div class="token-box subword">##ing</div>
+          <div class="token-id">ID: 492</div>
+        </div>
+
+        <div class="token-card" id="t6">
+          <div class="token-box">modern</div>
+          <div class="token-id">ID: 2715</div>
+        </div>
+
+        <div class="token-card" id="t7">
+          <div class="token-box">AI</div>
+          <div class="token-id">ID: 9552</div>
+        </div>
+
+        <div class="token-card" id="t8">
+          <div class="token-box punct">!</div>
+          <div class="token-id">ID: 999</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#header", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.2)
+      .to("#sentence", { opacity: 1, scale: 1, duration: 1.0, ease: "back.out(1.4)" }, 1.0)
+      .to("#split-icon", { opacity: 1, y: 6, duration: 0.6, repeat: 1, yoyo: true }, 2.4)
+      .to("#sentence", { y: -20, opacity: 0.4, duration: 0.6 }, 3.2)
+      .to([".token-card"], { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "back.out(1.7)" }, 3.5)
+      .to(".token-id", { color: "#38bdf8", borderColor: "#0284c7", stagger: 0.1, duration: 0.5 }, 5.5)
+      .to(".token-box", { scale: 1.05, duration: 0.8, stagger: 0.1, yoyo: true, repeat: 1 }, 7.0)
+      .to("#stage", { opacity: 0, duration: 0.6, ease: "power2.in" }, 9.8);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 10.5; };
+  </script>
+</body>
+</html>

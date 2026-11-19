@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scene 6: Conclusion</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #0d1a33 0%, #060913 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #ffffff;
+    }
+    #stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .check-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(52, 211, 153, 0.15);
+      border: 2px solid #34d399;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      box-shadow: 0 0 30px rgba(52, 211, 153, 0.3);
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    .title {
+      font-size: 64px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .subtitle {
+      font-size: 28px;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 900px;
+      line-height: 1.5;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .pillars {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .pillar-pill {
+      padding: 12px 28px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 20px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  </style>
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+  <script>
+    if (typeof gsap === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <div class="check-icon" id="icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <h1 class="title" id="title">Empowering Modern Intelligence</h1>
+    <p class="subtitle" id="subtitle">Simple mathematical operations multiplied across billions of parameters define today's transformative AI systems.</p>
+    
+    <div class="pillars">
+      <div class="pillar-pill" id="p1">Neurons & Layers</div>
+      <div class="pillar-pill" id="p2">Weights & Biases</div>
+      <div class="pillar-pill" id="p3">Forward Propagation</div>
+    </div>
+  </div>
+
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to("#icon", { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(2)" }, 0.2)
+      .to("#title", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.5)
+      .to("#subtitle", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.8)
+      .to(["#p1", "#p2", "#p3"], { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "back.out(1.5)" }, 1.2)
+      .to("#stage", { opacity: 0, duration: 0.6, ease: "power2.in" }, 2.5);
+
+    window.seekTimeline = function(seconds) { tl.seek(seconds); };
+    window.getTimelineDuration = function() { return 3.0; };
+  </script>
+</body>
+</html>
